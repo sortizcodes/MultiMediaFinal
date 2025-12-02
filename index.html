@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Magical Shelf</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Keyframes for the Animations */
+        @keyframes swirl {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg) scaleX(-1); } /* Flip and mirror */
+            51% { transform: rotateY(0deg) scaleX(1); } /* Quick reset */
+            100% { transform: rotateY(0deg); }
+        }
+
+        @keyframes uncurl {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-90deg); }
+        }
+
+        @keyframes grow {
+            0% { filter: grayscale(100%) brightness(50%); transform: scale(1); }
+            100% { filter: grayscale(0%) brightness(100%); transform: scale(1.1); }
+        }
+
+        @keyframes fire-glow {
+            0% { box-shadow: 0 0 5px rgba(255, 165, 0, 0.5), 0 0 10px rgba(255, 69, 0, 0.3); }
+            50% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.8), 0 0 20px rgba(255, 69, 0, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(255, 165, 0, 0.5), 0 0 10px rgba(255, 69, 0, 0.3); }
+        }
+
+        /* Initial States */
+        .crystalball-img {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .mirror-img {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .candle-img {
+            transition: box-shadow 0.8s ease-in-out;
+        }
+
+        .hourglass-img {
+            transform-origin: 50% 50%;
+            transition: transform 1.5s ease-in-out;
+        }
+        
+        .letter-img {
+            transform-origin: top center;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .rose-img {
+            filter: grayscale(100%) brightness(50%);
+            transform: scale(1);
+            transition: filter 2s ease-in-out, transform 2s ease-in-out;
+        }
+
+        /* Animation Classes (applied on click) */
+        .animate-swirl {
+            animation: swirl 5s linear infinite;
+        }
+
+        .animate-flip {
+            animation: flip 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .animate-uncurl {
+            animation: uncurl 1.5s ease-out forwards;
+        }
+
+        .animate-grow {
+            animation: grow 2s forwards;
+        }
+
+        .animate-fire {
+            animation: fire-glow 1.5s ease-in-out infinite;
+            border-radius: 50%; /* Gives a better base for the shadow glow */
+        }
+        
+        .animate-crack {
+            opacity: 0.1; /* Visually "cracks" the mirror by making it fade/shatter */
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* The background container ensures the shelf image covers the screen */
+        #shelf-container {
+            background-image: url('uploaded:shelf_background.jpg-fe26a6e1-4d5a-411d-a2f7-33885cf54e2a');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans antialiased flex flex-col items-center justify-center">
+
+    <div id="app" class="w-full max-w-4xl relative overflow-hidden">
+        
+        <div id="shelf-container" class="relative mx-auto" style="aspect-ratio: 1000/1600; max-height: 100vh;">
+
+            <!-- Shelf Contents -->
+            
+            <!-- TOP SHELF ITEMS -->
+            <div id="top-shelf" class="absolute inset-0 pt-[15%] flex justify-around">
+
+                <!-- 1. Crystal Ball (Swirl) -->
+                <div id="crystalball" class="absolute top-[25%] left-[5%] w-[20%] cursor-pointer group" onclick="toggleAnimation('crystalball', 'swirl', 'animate-swirl')">
+                    <img class="crystalball-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:crystalball.PNG-2d9528ff-985b-4fcb-aeac-b1a01e85a74e" alt="Crystal Ball">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">SWIRL</div>
+                </div>
+
+                <!-- 2. Candle (Light/Fire) -->
+                <div id="candle" class="absolute top-[18%] right-[5%] w-[20%] cursor-pointer group" onclick="toggleAnimation('candle', 'fire', 'animate-fire')">
+                    <img class="candle-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:candle.PNG-d182d0af-d068-4b17-87c9-516dfaf994d5" alt="Candelabra">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">LIGHT FIRE</div>
+                </div>
+
+            </div>
+
+            <!-- MIDDLE SHELF ITEMS -->
+            <div id="middle-shelf" class="absolute inset-0 pt-[40%] flex justify-around">
+
+                <!-- 3. Hourglass (Flip) -->
+                <div id="hourglass" class="absolute top-[50%] left-[25%] w-[15%] cursor-pointer group" onclick="toggleAnimation('hourglass', 'flip', 'animate-flip')">
+                    <img class="hourglass-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:hourglass.PNG-e46d0fe3-41ec-4c05-bda0-3af535b36f20" alt="Hourglass">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">FLIP</div>
+                </div>
+
+                <!-- 4. Mirror (Crack) -->
+                <div id="mirror" class="absolute top-[40%] right-[30%] w-[15%] cursor-pointer group" onclick="toggleAnimation('mirror', 'crack', 'animate-crack')">
+                    <img class="mirror-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:mirror.PNG-685a4a8c-c117-4455-957b-e8596e1ed573" alt="Cracked Mirror">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">CRACK</div>
+                </div>
+            </div>
+
+            <!-- BOTTOM SHELF ITEMS -->
+            <div id="bottom-shelf" class="absolute inset-0 pt-[65%] flex justify-around">
+                
+                <!-- 5. Letter (Open) -->
+                <div id="letter" class="absolute top-[75%] left-[20%] w-[25%] cursor-pointer group" onclick="toggleAnimation('letter', 'open', 'animate-uncurl')">
+                    <img class="letter-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:letter.PNG-a10376b3-6e45-47a6-be55-bc6eb2b6bc36" alt="Sealed Letter">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">OPEN</div>
+                </div>
+
+                <!-- 6. Rose (Revive) -->
+                <div id="rose" class="absolute top-[68%] right-[10%] w-[20%] cursor-pointer group" onclick="toggleAnimation('rose', 'revive', 'animate-grow')">
+                    <img class="rose-img w-full h-auto group-hover:scale-105" 
+                         src="uploaded:rose_dead.PNG-68da1cd8-fd91-460c-8d5f-31cfcce12ee6" alt="Withered Rose in Bell Jar">
+                    <div class="text-xs text-white text-center mt-1 bg-gray-900/50 rounded-full hidden group-hover:block transition duration-200">REVIVE</div>
+                </div>
+
+            </div>
+            
+            <!-- Primary Interaction Button -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                <button id="master-trigger" 
+                        class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-full shadow-lg hover:from-purple-700 hover:to-pink-700 transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-lg"
+                        onclick="runAllAnimations()">
+                    Cast the Spell (Run All)
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Get the list of all animation elements and their class names
+        const animationElements = [
+            { id: 'crystalball', className: 'animate-swirl' },
+            { id: 'candle', className: 'animate-fire' },
+            { id: 'hourglass', className: 'animate-flip' },
+            { id: 'mirror', className: 'animate-crack' },
+            { id: 'letter', className: 'animate-uncurl' },
+            { id: 'rose', className: 'animate-grow' },
+        ];
+        
+        /**
+         * Toggles a specific animation on a given element.
+         * @param {string} elementId - The ID of the container element (e.g., 'crystalball').
+         * @param {string} effectName - The descriptive name of the effect (used for console logging).
+         * @param {string} animationClass - The Tailwind/CSS class that applies the animation.
+         */
+        function toggleAnimation(elementId, effectName, animationClass) {
+            const container = document.getElementById(elementId);
+            // The image is the first child of the container
+            const element = container.querySelector('img'); 
+            
+            if (element.classList.contains(animationClass)) {
+                // Remove animation
+                element.classList.remove(animationClass);
+                console.log(`${effectName} stopped on ${elementId}`);
+            } else {
+                // Run animation
+                // For flip/open/revive, we remove the class first to allow re-triggering
+                if (elementId === 'hourglass' || elementId === 'letter' || elementId === 'rose' || elementId === 'mirror') {
+                     // Force reflow/restart animation for non-infinite animations
+                    element.classList.remove(animationClass);
+                    void element.offsetWidth; // Trigger reflow
+                }
+                element.classList.add(animationClass);
+                console.log(`${effectName} activated on ${elementId}`);
+            }
+        }
+
+        /**
+         * Runs all animations simultaneously.
+         */
+        function runAllAnimations() {
+            // Check the current state of the button
+            const masterButton = document.getElementById('master-trigger');
+            
+            // Check if any persistent animation is currently running (like the rose or hourglass flip)
+            const isAnimating = animationElements.some(item => {
+                const container = document.getElementById(item.id);
+                const element = container.querySelector('img');
+                return element.classList.contains(item.className);
+            });
+            
+            if (isAnimating) {
+                // STOP ALL ANIMATIONS
+                animationElements.forEach(item => {
+                    const container = document.getElementById(item.id);
+                    const element = container.querySelector('img');
+                    element.classList.remove(item.className);
+                });
+                masterButton.textContent = 'Cast the Spell (Run All)';
+                console.log('All spells stopped.');
+            } else {
+                // START ALL ANIMATIONS
+                animationElements.forEach(item => {
+                    const container = document.getElementById(item.id);
+                    const element = container.querySelector('img');
+                    
+                    // Force restart non-infinite animations
+                    element.classList.remove(item.className);
+                    void element.offsetWidth; // Trigger reflow
+                    
+                    element.classList.add(item.className);
+                });
+                masterButton.textContent = 'Reset All Spells';
+                console.log('All spells activated!');
+
+                // Set a timeout to reset the button text after the shortest non-infinite animation (hourglass/letter at 2s/1.5s)
+                setTimeout(() => {
+                    // Check if infinite animations are still running to determine button text
+                    const crystalBall = document.getElementById('crystalball').querySelector('img');
+                    if (crystalBall.classList.contains('animate-swirl')) {
+                        masterButton.textContent = 'Reset All Spells';
+                    } else {
+                         // If infinite loops were manually stopped, revert to default text
+                         masterButton.textContent = 'Click here';
+                    }
+                }, 2500); // Wait 2.5 seconds for the non-looping animations to complete
+            }
+        }
+    </script>
+</body>
+</html>
